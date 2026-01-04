@@ -1,5 +1,25 @@
+// 包 adminlte 提供AdminLTE主题的模板定义
+// 该文件包含了AdminLTE主题的所有HTML模板，包括错误页面、管理面板、组件和表单等
+// 模板使用Go template语法，支持条件判断、循环和变量绑定
 package adminlte
 
+// TemplateList 定义了AdminLTE主题的所有模板
+// 键为模板名称，值为对应的HTML模板字符串
+//
+// 模板分类：
+//   - 错误页面模板：403、404、500
+//   - 管理面板模板：admin_panel
+//   - 组件模板：components/alert、components/box、components/button、components/col等
+//   - 表单组件模板：components/form/array、components/form/checkbox、components/form/code等
+//   - 布局模板：layout、layout_content、layout_footer等
+//   - 页面模板：login、register、profile等
+//
+// 注意事项：
+//   - 所有模板使用Go template语法
+//   - 使用 lang 和 langHtml 函数支持多语言
+//   - 使用 js 函数将Go变量转换为JavaScript变量
+//   - 使用 attr 函数动态设置HTML属性
+//   - 模板支持嵌套和继承
 var TemplateList = map[string]string{"403": `<div class="missing-content">
     <div class="missing-content-title">403</div>
     <div class="missing-content-title-subtitle">Sorry, you don't have access to this page.</div>
@@ -44,7 +64,7 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
 }
 </style>`, "500": `<div class="error-content">
     <div class="error-content-title">500</div>
-    <div class="error-content-title-subtitle">Sorry, the server is reporting an error.</div>
+    <div class="error-content-title-subtitle">抱歉，服务器报告了一个错误。</div>
 </div>
 
 <style>
@@ -66,23 +86,23 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
 </style>`, "admin_panel": `{{define "admin_panel"}}
     <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-            <li title="{{lang "Fixed the sidebar"}}">
+            <li title="{{lang "固定侧边栏"}}">
                 <a href="javascript:void(0);" class="fixed-btn" data-click="false">
                     <i class="fa fa-thumb-tack"></i>
                 </a>
             </li>
 
-            <li title="{{lang "Enter fullscreen"}}" class="fullpage-btn">
+            <li title="{{lang "进入全屏"}}" class="fullpage-btn">
                 <a href="javascript:void(0);">
                     <i class="fa fa-arrows-alt"></i>
                 </a>
             </li>
-            <li title="{{lang "Exit fullscreen"}}" class="exit-fullpage-btn" style="display: none;">
+            <li title="{{lang "退出全屏"}}" class="exit-fullpage-btn" style="display: none;">
                 <a href="javascript:void(0);">
                     <i class="fa fa-compress"></i>
                 </a>
             </li>
-            <li title="{{lang "Refresh"}}">
+            <li title="{{lang "刷新"}}">
                 <a href="javascript:void(0);" class="container-refresh">
                     <i class="fa fa-refresh"></i>
                 </a>
@@ -100,9 +120,9 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
                     <ul class="dropdown-menu">
                         {{.NavButtonsHTML}}
                         <li><a href="{{.UrlPrefix}}/info/normal_manager/edit?__goadmin_edit_pk={{.User.Id}}" class="dropdown-item"><i class="fa fa-edit"></i>
-                            <span>{{lang "setting"}}</span></a></li>
+                            <span>{{lang "设置"}}</span></a></li>
                         <li><a href="{{.UrlPrefix}}/logout" class="no-pjax dropdown-item"><i class="fa fa-sign-out"></i>
-                            <span>{{lang "sign out"}}</span></a></li>
+                            <span>{{lang "退出登录"}}</span></a></li>
                     </ul>
                 </li>
             {{end}}
@@ -172,7 +192,7 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
 
                 <td style="width: 75px;">
                     <div class="{{$.Field}}-remove btn btn-warning btn-sm pull-right">
-                    <i class="fa fa-trash">&nbsp;</i>{{lang "remove"}}
+                    <i class="fa fa-trash">&nbsp;</i>{{lang "删除"}}
                     </div>
                 </td>
             </tr>
@@ -183,7 +203,7 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
       <td></td>
       <td>
         <div class="{{.Field}}-add btn btn-success btn-sm pull-right">
-          <i class="fa fa-save"></i>&nbsp;{{lang "new"}}
+          <i class="fa fa-save"></i>&nbsp;{{lang "新增"}}
         </div>
       </td>
     </tr>
@@ -200,7 +220,7 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
     </td>
     <td style="width: 75px;">
       <div class="{{.Field}}-remove btn btn-warning btn-sm pull-right">
-        <i class="fa fa-trash">&nbsp;</i>{{lang "remove"}}
+        <i class="fa fa-trash">&nbsp;</i>{{lang "删除"}}
       </div>
     </td>
   </tr>
@@ -459,11 +479,11 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
         {{if eq .Value ""}}
             <input style="width: 140px" type="text" name="{{.Field}}" value="fa-bars"
                    class="form-control {{.Field}}"
-                   placeholder="{{lang "Input Icon"}}">
+                   placeholder="{{lang "输入图标"}}">
         {{else}}
             <input style="width: 140px" type="text" name="{{.Field}}" value="{{.Value}}"
                    class="form-control {{.Field}}"
-                   placeholder="{{lang "Input Icon"}}">
+                   placeholder="{{lang "输入图标"}}">
         {{end}}
     </div>
     <script>
@@ -650,7 +670,7 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
     </script>
 {{end}}`, "components/form/selectbox": `{{define "form_selectbox"}}
     <select class="form-control {{.FieldClass}}" style="width: 100%;" name="{{.Field}}[]" multiple="multiple"
-            data-placeholder="Input {{.Head}}" {{if not .Editable}}disabled="disabled"{{end}}>
+            data-placeholder="输入{{.Head}}" {{if not .Editable}}disabled="disabled"{{end}}>
         {{range  $key, $v := .Options }}
             <option value='{{$v.Value}}' {{attr $v.SelectedLabel}}>{{if ne $v.TextHTML ""}}{{$v.TextHTML}}{{else}}{{$v.Text}}{{end}}</option>
         {{end}}
@@ -748,7 +768,7 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
                         <i class="fa fa-arrow-down"></i>
                     </div> 
                     <div class="{{$.Field}}-remove btn btn-warning btn-sm pull-right">
-                        <i class="fa fa-trash">&nbsp;</i>{{lang "remove"}}
+                        <i class="fa fa-trash">&nbsp;</i>{{lang "删除"}}
                     </div> 
               </div>
           </td>
@@ -762,7 +782,7 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
         {{end}}
         <td>
             <div class="{{.Field}}-add btn btn-success btn-sm pull-right">
-            <i class="fa fa-save"></i>&nbsp;{{lang "new"}}
+            <i class="fa fa-save"></i>&nbsp;{{lang "新增"}}
             </div>
         </td>
     </tr>
@@ -789,7 +809,7 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
                 <i class="fa fa-arrow-down"></i>
             </div> 
             <div class="{{.Field}}-remove btn btn-warning btn-sm pull-right">
-                <i class="fa fa-trash">&nbsp;</i>{{lang "remove"}}
+                <i class="fa fa-trash">&nbsp;</i>{{lang "删除"}}
             </div>         
         </div>
         </td>
@@ -1586,11 +1606,11 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
             </div>
         {{end}}
         <a class="btn btn-sm btn-primary grid-refresh">
-            <i class="fa fa-refresh"></i> {{lang "Refresh"}}
+            <i class="fa fa-refresh"></i> {{lang "刷新"}}
         </a>
     </span>
     <script>
-        let toastMsg = '{{lang "Refresh succeeded"}} !';
+        let toastMsg = '{{lang "刷新成功"}} !';
         $('.grid-refresh').unbind('click').on('click', function () {
             $.pjax.reload('#pjax-container');
             toastr.success(toastMsg);
@@ -1736,7 +1756,7 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
                                            data-url="{{$UpdateUrl}}"
                                            data-value="{{(index $info $head2.Field).Value}}"
                                            data-name="{{$head2.Field}}"
-                                           data-title="Enter {{$head2.Head}}">{{(index $info $head2.Field).Content}}</a>
+                                           data-title="输入{{$head2.Head}}">{{(index $info $head2.Field).Content}}</a>
                                     {{end}}
                                 </td>
                             {{else}}
@@ -2975,14 +2995,14 @@ var TemplateList = map[string]string{"403": `<div class="missing-content">
                 <div class="user-panel">
                     <div class="pull-left image">
                         {{if eq .User.Avatar ""}}
-                            <img src="{{.UrlPrefix}}/assets/dist/img/avatar04.png" class="img-circle" alt="User Image">
+                            <img src="{{.UrlPrefix}}/assets/dist/img/avatar04.png" class="img-circle" alt="用户头像">
                         {{else}}
-                            <img src="{{.User.Avatar}}" class="img-circle" alt="User Image">
+                            <img src="{{.User.Avatar}}" class="img-circle" alt="用户头像">
                         {{end}}
                     </div>
                     <div class="pull-left info">
                         {{.User.Name}}
-                        <a href="#"><i class="fa fa-circle text-success"></i> {{lang "online"}}</a>
+                        <a href="#"><i class="fa fa-circle text-success"></i> {{lang "在线"}}</a>
                     </div>
                 </div>
             {{end}}
